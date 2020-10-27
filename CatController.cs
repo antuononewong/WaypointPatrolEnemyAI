@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BlackyController : MonoBehaviour
+public class CatController : MonoBehaviour
 {   
     // Dependancies
     public GameObject menuHandler;
