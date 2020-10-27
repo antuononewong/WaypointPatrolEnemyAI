@@ -1,27 +1,25 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class CatController : MonoBehaviour
-{
+public class BlackyController : MonoBehaviour
+{   
     // Dependancies
     public GameObject menuHandler;
-    public GameObject soundManager;
 
-    // Adjustable attributes
-    public float speed;
-
+    // Adjustable
+    public float speed = 3.0f;
+    
     // Components
     private Animator _animator;
-    private SoundController _soundController;
 
     // Playspace
-    private float height = 7.0f;
-    private float width = 14.0f;
+    private float _height = 7.0f;
+    private float _width = 14.0f;
 
     // Movement
     private Vector3 _movePoint;
     private float _runToMovePointTimer = 4.0f;
 
-    // Pathing
+    // Pathing/Waypoints
     private float _maxPathTimer = 0.1f;
     private float _pathTimer;
     private Vector3 _lastWaypoint;
@@ -31,7 +29,6 @@ public class CatController : MonoBehaviour
     private void Start()
     {
         _animator = GetComponent<Animator>();
-        _soundController = soundManager.GetComponent<SoundController>();
         _waypoints = new Vector3[4];
         _currentPatrolSlot = 1;
         MoveToRandomPoint();
@@ -65,7 +62,6 @@ public class CatController : MonoBehaviour
                 {
                     _animator.SetFloat("PatrolSlot", _currentPatrolSlot + 0.5f);
                     _currentPatrolSlot += 1;
-
                     if (_currentPatrolSlot <= 3)
                     {
                         _lastWaypoint = _waypoints[_currentPatrolSlot];
@@ -87,14 +83,12 @@ public class CatController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         ProjectileController projectile = other.GetComponent<ProjectileController>();
-
         if (projectile != null)
         {
-            _soundController.PlaySound("EnemyDeath");
+            SoundController.PlaySound("EnemyDeath");
             Destroy(gameObject);
         }
     }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         WolfController player = collision.gameObject.GetComponent<WolfController>();
@@ -110,8 +104,8 @@ public class CatController : MonoBehaviour
     // pattern for the gameObject to move along
     private void MoveToRandomPoint()
     {
-        float x = Random.Range(-width, width);
-        float y = Random.Range(-height, height);
+        float x = Random.Range(-_width, _width);
+        float y = Random.Range(-_height, _height);
 
         _movePoint = new Vector3(x, y, 0);
 
